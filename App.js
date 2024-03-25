@@ -1,8 +1,46 @@
-import { Button, Image, StyleSheet, Text, View, StatusBar } from "react-native";
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Alert,
+} from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import * as Location from "expo-location";
 
 export default function App() {
+  /* State para monitorar a localização atula do 
+  usuário  */
+  const [minhaLocalizacao, setMinhaLocalizacao] = useState(null);
+
+  useEffect(() => {
+    async function obterLocalizacao() {
+      /* Acessando o status da requisição de permissão de uso 
+      dos recursos de geolocalização */
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      /* Se o status Não foi liberado/permitindo, então 
+      será dado um alerta notificando o usuário */
+      if (status !== "granted") {
+        Alert.alert("Ops !", "Você não autorizou o uso da geolocalização");
+        return;
+      }
+
+      /* Se o status estiver Ok, obtemos os dados da localização atual. 
+      E atualizamos o state de minhaLocalização  */
+      let localizacaoAtual = await Location.getCurrentPositionAsync({});
+
+      setMinhaLocalizacao(localizacaoAtual);
+    }
+
+    obterLocalizacao();
+  }, []);
+
+  // console.log(minhaLocalizacao);
+
   const [localizacao, setLocalizacao] = useState({
     latitude: -33.867886,
     longitude: -63.987,
