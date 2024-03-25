@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import fantasma from "./assets/ghost.png";
 
@@ -41,7 +41,10 @@ export default function App() {
           // minZoomLevel={5}  Delimitando o zoom minimo do usuário
           // maxZoomLevel={15}  Delimitando o zoom máximo do usuário
         >
-          <Marker coordinate={localizacao} draggable />
+          <Marker coordinate={localizacao}>
+            {/* Incone Personalizado */}
+            <Image source={fantasma} />
+          </Marker>
         </MapView>
       </View>
     </>
