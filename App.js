@@ -42,7 +42,7 @@ export default function App() {
           // maxZoomLevel={15}  Delimitando o zoom máximo do usuário
         >
           <Marker coordinate={localizacao}>
-            {/* Incone Personalizado */}
+            {/* ícone Personalizado */}
             <Image source={fantasma} />
           </Marker>
         </MapView>
