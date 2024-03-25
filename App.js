@@ -1,9 +1,16 @@
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import fantasma from "./assets/ghost.png";
+import { useState } from "react";
 
 export default function App() {
+  const [localizacao, setLocalizacao] = useState({
+    latitude: -33.867886,
+    longitude: -63.987,
+    latitudeDelta: 10,
+    longitudeDelta: 10,
+  });
+
   /* Coordenadas para o MapView */
   const regiaoInicialMapa = {
     /*
@@ -21,12 +28,15 @@ export default function App() {
     longitudeDelta: 40,
   };
 
-  /* Coordenadas para Marker que será aplicado ao MapView */
-  const localizacao = {
-    latitude: -33.867886,
-    longitude: -63.987,
-    latitudeDelta: 10,
-    longitudeDelta: 10,
+  const marcarLocal = (event) => {
+    // console.log(event.nativeEvent);
+    setLocalizacao({
+      ...localizacao, // usado para pegar/manter os deltas
+
+      // Obtendo novos valores a partir do evento de pressionar
+      latitude: event.nativeEvent.coordinate.latitude,
+      longitude: event.nativeEvent.coordinate.longitude,
+    });
   };
 
   return (
@@ -34,6 +44,7 @@ export default function App() {
       <StatusBar />
       <View style={styles.container}>
         <MapView
+          onPress={marcarLocal}
           mapType="hybrid"
           userInterfaceStyle="dark" // funcionara só para ios
           style={styles.mapa}
@@ -41,10 +52,7 @@ export default function App() {
           // minZoomLevel={5}  Delimitando o zoom minimo do usuário
           // maxZoomLevel={15}  Delimitando o zoom máximo do usuário
         >
-          <Marker coordinate={localizacao}>
-            {/* ícone Personalizado */}
-            <Image source={fantasma} />
-          </Marker>
+          <Marker coordinate={localizacao} />
         </MapView>
       </View>
     </>
