@@ -8,7 +8,8 @@ export default function App() {
     longitude: -55,
 
     /* Definição do zoom do mapa.
-    Quanto menor, mais próximo o mapa. */
+    Quanto menor, mais próximo o mapa.
+    Quanto maior mais longe. */
     latitudeDelta: 40,
     longitudeDelta: 40,
   };
@@ -16,7 +17,14 @@ export default function App() {
     <>
       <StatusBar />
       <View style={styles.container}>
-        <MapView style={styles.mapa} initialRegion={regiaoInicialMapa} />
+        <MapView
+          mapType="hybrid"
+          userInterfaceStyle="dark" // funcionara só para ios
+          style={styles.mapa}
+          initialRegion={regiaoInicialMapa}
+          minZoomLevel={5} // Delimitando o zoom minimo do usuário
+          maxZoomLevel={15} // Delimitando o zoom máximo do usuário
+        />
       </View>
     </>
   );
