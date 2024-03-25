@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Button, Image, StyleSheet, Text, View, StatusBar } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useState } from "react";
 
@@ -43,17 +42,21 @@ export default function App() {
     <>
       <StatusBar />
       <View style={styles.container}>
-        <MapView
-          onPress={marcarLocal}
-          mapType="hybrid"
-          userInterfaceStyle="dark" // funcionara só para ios
-          style={styles.mapa}
-          initialRegion={regiaoInicialMapa}
-          // minZoomLevel={5}  Delimitando o zoom minimo do usuário
-          // maxZoomLevel={15}  Delimitando o zoom máximo do usuário
-        >
-          <Marker coordinate={localizacao} />
-        </MapView>
+        <View>
+          <Button title="Onde estou?" onPress={marcarLocal} />
+        </View>
+        <View style={styles.viewMapa}>
+          <MapView
+            mapType="hybrid"
+            userInterfaceStyle="dark" // funcionara só para ios
+            style={styles.mapa}
+            initialRegion={regiaoInicialMapa}
+            // minZoomLevel={5}  Delimitando o zoom minimo do usuário
+            // maxZoomLevel={15}  Delimitando o zoom máximo do usuário
+          >
+            <Marker coordinate={localizacao} />
+          </MapView>
+        </View>
       </View>
     </>
   );
