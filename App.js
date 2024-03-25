@@ -41,12 +41,10 @@ export default function App() {
 
   // console.log(minhaLocalizacao);
 
-  const [localizacao, setLocalizacao] = useState({
-    latitude: -33.867886,
-    longitude: -63.987,
-    latitudeDelta: 10,
-    longitudeDelta: 10,
-  });
+  /* Este state tem a finalidade de determinar
+  a posição/localização no MapView junto com o Marker.
+  Inicialmente é nulo pois o usuário ainda não acionou o botão da sua localização. */
+  const [localizacao, setLocalizacao] = useState(null);
 
   /* Coordenadas para o MapView */
   const regiaoInicialMapa = {
@@ -65,14 +63,18 @@ export default function App() {
     longitudeDelta: 40,
   };
 
-  const marcarLocal = (event) => {
+  const marcarLocal = () => {
     // console.log(event.nativeEvent);
     setLocalizacao({
-      ...localizacao, // usado para pegar/manter os deltas
+      /*  Obtendo novos valores a partir da geolocalização da posição do usuário
+      Aqui é necessário acessar a propriedade 'coords' do state minhaLocalizacao. Os valores desta propriedade correspondem ao que o Location conseguiu obter à partir do GPS do aparelho */
+      latitude: minhaLocalizacao.coords.latitude,
+      longitude: minhaLocalizacao.coords.longitude,
 
-      // Obtendo novos valores a partir do evento de pressionar
-      latitude: event.nativeEvent.coordinate.latitude,
-      longitude: event.nativeEvent.coordinate.longitude,
+      /* Aqui usamos deltas bem baixos para poder aproximar bastante
+      a visualização do mapa e do marker. */
+      longitudeDelta: 0.02,
+      latitudeDelta: 0.01,
     });
   };
 
@@ -88,11 +90,11 @@ export default function App() {
             mapType="hybrid"
             userInterfaceStyle="dark" // funcionara só para ios
             style={styles.mapa}
-            initialRegion={regiaoInicialMapa}
+            region={localizacao ?? regiaoInicialMapa}
             // minZoomLevel={5}  Delimitando o zoom minimo do usuário
             // maxZoomLevel={15}  Delimitando o zoom máximo do usuário
           >
-            <Marker coordinate={localizacao} />
+            {localizacao && <Marker coordinate={localizacao} />}
           </MapView>
         </View>
       </View>
